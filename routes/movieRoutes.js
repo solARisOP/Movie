@@ -5,4 +5,3 @@ export const router = express()
 
 router.route('/').get(getMovies)
 router.route('/:id').get(get_Movie)
-// router.route('/list').get().post().delete().patch()

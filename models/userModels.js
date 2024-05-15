@@ -12,7 +12,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    list_id: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'List'
+    }]
 
 })
 
@@ -30,4 +34,4 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-export const userModel = mongoose.model("user", userSchema);
+export const userModel = mongoose.model("User", userSchema);

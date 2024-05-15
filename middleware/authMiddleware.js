@@ -1,6 +1,6 @@
 import JsonWebToken from "jsonwebtoken"
 
-export const authenticationVerify = (req, res, next) => {
+export const validatToken = (req, res, next) => {
     const authe = req.headers.authorization;
     if(!authe || !authe.startsWith('Bearer '))
     {

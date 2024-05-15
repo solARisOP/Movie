@@ -2,9 +2,12 @@ import { userModel } from "../models/userModels.js"
 import bcrypt from "bcrypt"
 import JsonWebToken from "jsonwebtoken"
 
+const authView = (req, res)=>{
+    res.render('auth')
+}
+
 const userLogin = async (req, res)=>{
     let { username, password } = req.body
-    username = username.trim()
     if(!username || !password)
     {
         res.status(400)
@@ -19,13 +22,11 @@ const userLogin = async (req, res)=>{
     }
     
     const token = JsonWebToken.sign({username : user.username, id : user._id}, process.env.jwt_secret, {expiresIn:'30d'});
-    res.cookie("name", "nitish", {maxAge: 90000})
-    res.json({message : "User login successfull", token});
+    res.json({message : 1, token});
 }
 
 const userSignup = async (req, res)=>{
-    const { username, password } = req.body
-    username = username.trim()
+    var { username, password } = req.body
     if(!username || !password)
     {
         res.status(400)
@@ -36,4 +37,4 @@ const userSignup = async (req, res)=>{
     res.json({message : "user created successfully"});
 }
 
-export {userLogin, userSignup};
+export {userLogin, userSignup, authView};
