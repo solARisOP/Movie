@@ -3,6 +3,8 @@ const password = document.getElementById('password');
 const loginBtn = document.getElementById('login');
 const signupBtn = document.getElementById('signup');
 const eventsBlock = document.getElementById('events');
+const token = document.getElementById('token');
+const subBtn = document.getElementById("myBtn");
 
 signupBtn.addEventListener('click', async ()=>{
     eventsBlock.style.pointerEvents="none";
@@ -42,8 +44,11 @@ loginBtn.addEventListener('click', async ()=>{
     }
     else
     {
-        console.log(data);
-        localStorage.setItem('token', data.token);
+        var authtoken = "Bearer";
+        authtoken = authtoken.concat(" ", data.token)
+        localStorage.setItem('token', authtoken);
+        token.value = localStorage.getItem('token', authtoken);
+        subBtn.click();
     }
     eventsBlock.style.pointerEvents="auto";
 })

@@ -1,31 +1,36 @@
 import axios from "axios"
 
 const getMovies = async (req, res) => {
-    const {name} = req.query
-    if(!name)
+    var {movie_name, movie_id, year, type} = req.body
+    if(!movie_name && !movie_id)
     {
         res.status(400)
-        throw new Error('name od the movie is mandatory')
+        throw new Error('one of name or id of content is compulsory')
     }
+    if(type === undefined) type = "movie"
 
-    const {data} = await axios.get(`https://www.omdbapi.com/?s=${name}&apikey=${process.env.API_OMDB}`)
+    if(movie_id !== "")
+    {
+        let {data} = await axios.get(`https://www.omdbapi.com/?i=${movie_id}&apikey=${process.env.API_OMDB}`)
+        if(data.Response == "False")
+        {
+            res.status(404)
+            throw new Error("wrong id")
+        }
+        const movies = [data]
+        res.render('moviesView', {movies});
+    } 
+    var data2 = await axios.get(`https://www.omdbapi.com/?s=${movie_name}&y=${year}&type=${type}&apikey=${process.env.API_OMDB}`)
+    let{data} = data2
+    if(data.Response === "False")
+    {
+        res.status(404)
+        throw new Error('No match')
+    }
     const {Search:chunk} = data
-    const movies = chunk.slice(0, 5);
+    const movies = chunk.slice(0, 10);
 
-    res.json({movies});
+    res.render('moviesView', {movies});
 }
 
-const get_Movie = async (req, res) => {
-    const {id} = req.params
-    if(!id)
-    {
-        res.status(400)
-        throw new Error('id is required')
-    }
-
-    const {data:movie} = await axios.get(`https://www.omdbapi.com/?i=${id}&apikey=${process.env.API_OMDB}`)
-
-    res.json(movie);
-}
-
-export {getMovies, get_Movie}
+export {getMovies}

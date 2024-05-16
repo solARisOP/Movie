@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/userlist.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <form action="/lists/home" method="post" hidden=true id="userHomeForm">
+        <input type="text" id="token" name="token">
+        <button type="submit" id="myBtn"></button>
+    </form>
+    <div class="container mt-5 mb-5">
+        <div class="d-flex justify-content-between">
+            <h1 class="text-warning mb-3"><%= name %></h1>
+            <div class="dropdown">
+                <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Options
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" role="button" id="del-list">Delete list</a></li>
+                  <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#movieModal" role="button">Add Content</a></li>
+                </ul>
+              </div>
+        </div>
+        <div class="d-flex justify-content-center row">
+            <div class="col-md-10">
+                <% if (movies.length==0) { %>
+                    <h1 class="display-4 font-weight-bolder text-light">Empty list is as worst as bad choice in movies. Grow your
+                        list 😀</h1>
+
+                    <% } else { %>
+                        <% for (let i=0; i < movies.length; i++) { %>
+                            <div class="row p-2 bg-warning border rounded position-relative my-4">
+                                <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image"
+                                        src=<%= movies[i].poster %>></div>
+                                <div class="col-md-6 mt-1">
+                                    <div class="py-3"><h4><%=movies[i].title%></h4></div>
+                                    
+                                    <div class="d-flex flex-row">
+                                        <div class="mt-1 mb-1 spec-1 text-dark"><span>Certification : <%=movies[i].rated%></span><span class="dot"></span>
+                                            <span>ImDB rating : <%=movies[i].rating%></span><span class="dot"></span><span>Casual<br></span></div>
+                                    </div>
+                                    <div class="mt-1 mb-1 spec-1 text-dark">Cast : <%=movies[i].actors%></div>
+                                    <div class="mt-1 mb-1 spec-1 text-dark">Director : <%=movies[i].director%></div>
+                                    <div class="mt-1 mb-1 spec-1 text-dark">Writers : <%=movies[i].writer%></div>
+                                    <p class="text-justify mb-0 text-dark lead fs-5"><%=movies[i].plot%><br><br></p>
+                                </div>
+                                <div class="align-items-center align-content-around col-md-3 border-left mt-1">
+                                    <h6 class="text-dark">Imdb Id: <%=movies[i].id%></h6>
+                                    <h6 class="text-dark">Release Date: <%=movies[i].date%></h6>
+                                    <h6 class="text-dark">Runtime: <%=movies[i].runtime%></h6>
+                                    <h6 class="text-dark">Genre: <%=movies[i].genre%></h6>
+                                    <h6 class="text-dark">Box-Office: <%=movies[i].boxOffice%></h6>
+                                    <h6 class="text-dark">Category: <%=movies[i].category%></h6>
+                                </div>
+                                <div class="d-flex justify-content-end position-absolute" style="top: 0px;">
+                                    <i class="fa fa-trash-o mt-3 me-3" style="font-size:36px; cursor: pointer;" data-movieid=<%= movies[i].id%> data-listid=<%= list_id %> onclick="delMovie(this)"></i>
+                                </div>
+                            </div>
+
+                            <% } %>
+                                <% } %>
+            </div>
+        </div>
+    </div>
+
+
+    <%# add movie modal %>
+    <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Add movies/series/shows/content</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="movie_id" class="col-form-label">Imdb Id</label>
+                    <input type="text" class="form-control" id="movie_id" data-listid=<%= list_id %>  trim>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" id="subBtn">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="/js/userlist.js"></script>
+
+</html>

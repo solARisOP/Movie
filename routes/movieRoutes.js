@@ -1,7 +1,9 @@
 import express from "express"
-import { getMovies, get_Movie } from "../controllers/movieControllers.js"
+import { getMovies } from "../controllers/movieControllers.js"
+import { validatToken } from "../middleware/authMiddleware.js"
+import { redirectRequest } from "../controllers/redirectController.js"
 
 export const router = express()
-
-router.route('/').get(getMovies)
-router.route('/:id').get(get_Movie)
+router.route('/').get(redirectRequest)
+router.use(validatToken)
+router.route('/').post(getMovies)

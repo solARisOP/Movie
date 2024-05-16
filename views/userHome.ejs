@@ -4,16 +4,137 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Movie playlists</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/userHome.css">
+    <link rel="stylesheet" href="/css/navbar.css">
 </head>
 
 <body>
-    <h1>Hello user</h1>
+    <nav class="navbar navbar-expand-lg">
+        <div class="collapse navbar-collapse d-flex align-items-center justify-content-around" id="navbarSupportedContent">
+            <h4 class="navbar-brand">Fasal</h4>
+            <button class="btn btn-outline-warning my-2 my-sm-0" data-bs-toggle="modal" data-bs-target="#searchModal">Search</button>
+        </div>
+    </nav>
+    <section class="wrapper mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <h1 class="display-4 font-weight-bolder">Welcome, <%=user.username%>
+                    </h1>
+                    <p class="lead">Here are your custom curated movie playlists, Enjoy searching and making your
+                        playlists bigger and better</p>
+                </div>
+            </div>
+            <div class="container d-flex justify-content-center my-3">
+                <a class="nav-link dropdown-toggle text-warning fs-4" data-bs-toggle="modal" role="button" data-bs-target="#listModal"
+                    aria-expanded="false">create list</a>
+            </div>
+            <div class="row">
+                <form action="/list/" method="post" hidden="true" id="getlistform">
+                    <input type="text" id="token" name="token">
+                    <button type="submit" id="subBtn"></button>
+                </form>
+                <% for (let i=0; i<all_lists.length; i++) {%>
+                    <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+                        <div class="card text-dark card-has-bg click-col"
+                            style="background-image:url('https://source.unsplash.com/random/?movie&<%=i%>');">
+                            <div class="card-img-overlay d-flex flex-column">
+                                <div class="card-body" style="cursor: pointer;" data-id=<%= all_lists[i]._id %> onclick="getList(this)">
+                                    <small class="card-meta mb-2"></small>
+                                    <h4 class="card-title mt-0">
+                                        <%= all_lists[i].name %>
+                                    </h4>
+                                    <small><i class="far fa-clock"></i>
+                                        <%= all_lists[i].created_at %>
+                                    </small>
+                                    <div class="p-3 my-2">
+                                        <p>
+                                            <%= all_lists[i].description %>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5 text-dark" id="searchModalLabel">Create List</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/movies/" method="post" id="searchForm">
+                    <div class="mb-3">
+                        <label for="movie_name" class="col-form-label">Name</label>
+                        <input type="text" class="form-control" id="movie_name" name="movie_name" placeholder="Enter title of content here" trim>
+                    </div>
+                    <div class="mb-3">
+                        <label for="movie_id" class="col-form-label">Imdb Id</label>
+                        <input type="text" class="form-control" id="movie_id" name="movie_id" placeholder="Enter id of content here" trim>
+                    </div>
+                    <div class="mb-3">
+                        <label for="type" class="col-form-label">Select type of content:</label>
+                        <select class="form-control" id="type">
+                            <option>movie</option>
+                            <option>series</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="year" class="col-form-label">Year for release</label>
+                        <input type="number" min="1900" max="2099" class="form-control" id="year" name="year" placeholder="year released">
+                    </div>
+                    <div class="mb-3" style="display: none;">
+                        <input type="text" class="form-control" id="tokens" name="tokens">
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-warning" id="searchBtn" onclick="return searchContent()">Proceed</button>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <%# create list modal modal %>
+    <div class="modal fade" id="listModal" tabindex="-1" aria-labelledby="listModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5 text-dark" id="listModalLabel">Create List</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="name" class="col-form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter list name here" trim required>
+                </div>
+                <div id="nameHelp" class="form-text">list name should only contain upper or lower class or digit spaces allowed</div>
+                <div class="mb-3">
+                    <label for="description" class="col-form-label">Description</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Enter list description here" trim>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" id="subBtn2">Proceed</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+<script src="/js/userHome.js" type="application/javascript"></script>
 
 </html>

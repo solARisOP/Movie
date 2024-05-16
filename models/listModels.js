@@ -15,6 +15,12 @@ const listSchema = new mongoose.Schema({
         trim : true,
         maxlength : [100, "name length is exceeding 100 characters"],
         require: [true, "list name is mandatory"],
+    },
+    description: String,
+    created_at: { 
+        type: Date,
+        required: true, 
+        default: Date.now 
     }
 });
 

@@ -1,7 +1,7 @@
 import JsonWebToken from "jsonwebtoken"
 
 export const validatToken = (req, res, next) => {
-    const authe = req.headers.authorization;
+    const authe = req.headers.authorization || req.body.token || req.body.tokens;
     if(!authe || !authe.startsWith('Bearer '))
     {
         res.status(401)
