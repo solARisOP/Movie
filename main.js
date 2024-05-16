@@ -7,7 +7,6 @@ import { ConnectDB } from './config/dbConnect.js';
 import { router as user } from './routes/authRoutes.js';
 import { router as movies} from './routes/movieRoutes.js';
 import { router as lists} from './routes/listRoutes.js';
-import { validatToken } from './middleware/authMiddleware.js';
 
 dotenv.config();
 ConnectDB();
