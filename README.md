@@ -1,5 +1,5 @@
 
-# Blog Scraper and Q&A System
+# fasal Movie Library
 
 This project allows users to make lists of movies/shows they like and keep them in collections and users can search for movies and shows.
 
