@@ -28,22 +28,24 @@ subBtn.addEventListener('click', async ()=>{
 })
 
 const delMovie = async (ele)=>{
-    let movie_id = ele.dataset.movieid;
-    let data = await fetch('/lists',{
-        method:'PUT',
-        headers : {
-            'Authorization' : localStorage.getItem('token'),
-            'Content-Type' : 'application/json',
-        },
-        body : JSON.stringify({
-            remove : 1,
-            movie_id,
-            list_id : ele.dataset.listid
+    if (confirm("Are your sure this action is irreversible") == true) {
+        let movie_id = ele.dataset.movieid;
+        let data = await fetch('/lists',{
+            method:'PUT',
+            headers : {
+                'Authorization' : localStorage.getItem('token'),
+                'Content-Type' : 'application/json',
+            },
+            body : JSON.stringify({
+                remove : 1,
+                movie_id,
+                list_id : ele.dataset.listid
+            })
         })
-    })
 
-    data = await data.json();
-    alert(data.message + " Reload to see Changes")
+        data = await data.json();
+        alert(data.message + " Reload to see Changes")
+    }
 }
 
 const DeleteList = document.getElementById("del-list");

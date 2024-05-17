@@ -35,8 +35,7 @@ var id = document.getElementById("movie_id")
 var tokens = document.getElementById("tokens")
 
 const searchContent = ()=>{
-   let idval = toString(id.value);
-   if(movie.val==='' && idval==='') return false;
+   if(movie.value==='' && id.value==='') return false;
    tokens.value = localStorage.getItem('token');
    return true;
 }

@@ -73,7 +73,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/movies/" method="post" id="searchForm">
+                <form action="/movies/" method="post" id="searchForm" onsubmit="return searchContent()">
                     <div class="mb-3">
                         <label for="movie_name" class="col-form-label">Name</label>
                         <input type="text" class="form-control" id="movie_name" name="movie_name" placeholder="Enter title of content here" trim>
@@ -84,7 +84,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="type" class="col-form-label">Select type of content:</label>
-                        <select class="form-control" id="type">
+                        <select class="form-control" id="type" name="type">
                             <option>movie</option>
                             <option>series</option>
                         </select>
@@ -97,7 +97,7 @@
                         <input type="text" class="form-control" id="tokens" name="tokens">
                     </div>
                     <div class="mb-3">
-                        <button type="submit" class="btn btn-warning" id="searchBtn" onclick="return searchContent()">Proceed</button>
+                        <button type="submit" class="btn btn-warning" id="searchBtn">Proceed</button>
                     </div>
                 </form>
             </div>
